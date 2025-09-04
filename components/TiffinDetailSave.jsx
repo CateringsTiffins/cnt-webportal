@@ -1,0 +1,59 @@
+"use client"
+import React, { useEffect, useState } from 'react'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Stack from '@mui/material/Stack';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { addchWishlist } from '@/app/features/user/settingSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import useRegistration from '@/hooks/useRegistration';
+
+const TiffinDetailSave = ({ branchId, is_wishlisted }) => {
+    const [wishlist, setWishlist] = useState(is_wishlisted);
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state) => state.user.accessToken);
+    const { handleClickOpen } = useRegistration();
+
+
+    useEffect(() => {
+        setWishlist(is_wishlisted);
+    }, [is_wishlisted]);
+
+    const onHandleAddFavourite = () => {
+        const newWishlistStatus = !wishlist;
+        const vendor_type = "Tiffin";
+        let data = {
+            branchId: branchId,
+            whishlistStatus: newWishlistStatus ? 1 : 0,
+            vendor_type
+        };
+        dispatch(addchWishlist(data));
+        setWishlist(newWishlistStatus);
+    }
+
+
+    return (
+        <>
+
+
+
+            {accessToken ? <>
+                <Stack direction="row" alignItems="center" spacing={1} className="vc-icons-tiffin" onClick={() => onHandleAddFavourite()}>
+                    {
+                        wishlist ? <Stack direction="row" alignItems="center" className="vc-icons-tiffin" spacing={1}>
+                            <FavoriteIcon style={{ fontSize: '18px' }} /> <span>Save</span></Stack> :
+                            <Stack direction="row" alignItems="center" className="vc-icons-tiffin" spacing={1}><FavoriteBorderIcon style={{ fontSize: '18px' }} /> <span>Save</span></Stack>
+                    }
+                </Stack>
+            </> : <Stack direction="row" alignItems="center" spacing={1} className="vc-icons-tiffin" onClick={handleClickOpen}>
+                    {
+                        wishlist ? <Stack direction="row" alignItems="center" className="vc-icons-tiffin" spacing={1}>
+                            <FavoriteIcon style={{ fontSize: '18px' }} /> <span>Save</span></Stack> :
+                            <Stack direction="row" alignItems="center" className="vc-icons-tiffin" spacing={1}><FavoriteBorderIcon style={{ fontSize: '18px' }} /> <span>Save</span></Stack>
+                    }
+                </Stack>}
+        </>
+    )
+}
+
+export default TiffinDetailSave
