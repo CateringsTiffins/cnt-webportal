@@ -19,7 +19,7 @@ export const fetchReviews = createAsyncThunk(
             });
             return response?.data?.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data.msg);
+            // return thunkAPI.rejectWithValue(error.response.data.msg);
         }
     }
 )
@@ -85,5 +85,3 @@ export const vendorDetailsSlice = createSlice({
 export const { } = vendorDetailsSlice.actions
 
 export default vendorDetailsSlice.reducer
-
-
